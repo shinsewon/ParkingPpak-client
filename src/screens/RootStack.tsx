@@ -12,11 +12,17 @@ export type RootStackNavigationProps =
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 
-function RootStack() {
+type RootStackProps = {
+  auth: boolean;
+};
+
+function RootStack({auth}: RootStackProps) {
   const navigation = useNavigation<RootStackNavigationProps>();
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      screenOptions={{headerShown: false}}
+      initialRouteName={auth ? 'MainTab' : 'Auth'}>
       <Stack.Screen name="MainTab" component={MainTab} />
       <Stack.Screen name="Auth" component={Auth} />
     </Stack.Navigator>
