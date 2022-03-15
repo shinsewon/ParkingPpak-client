@@ -4,8 +4,8 @@ import {
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import Home from '../Home';
-import Map from '../Map';
+import {HomeScreen} from 'screens/Home';
+import {MapStack} from 'screens/Map';
 import Setting from '../Setting';
 
 type MainTabNavigationProps = BottomTabNavigationProp<MainTabParams>;
@@ -18,7 +18,7 @@ export default function MainTab() {
       screenOptions={{tabBarShowLabel: false, tabBarActiveTintColor: 'yellow'}}>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
           tabBarIcon: ({size, color}) => (
             <Icon size={size} color={color} name="home" />
@@ -27,7 +27,7 @@ export default function MainTab() {
       />
       <Tab.Screen
         name="Map"
-        component={Map}
+        component={MapStack}
         options={{
           tabBarIcon: ({size, color}) => (
             <Icon size={size} color={color} name="map" />
