@@ -22,7 +22,7 @@ function RootStack({auth}: RootStackProps) {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName={!auth ? 'MainTab' : 'Auth'}>
+      initialRouteName={auth ? 'MainTab' : 'Auth'}>
       <Stack.Screen name="MainTab" component={MainTab} />
       <Stack.Screen name="Auth" component={Auth} />
     </Stack.Navigator>
