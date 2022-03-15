@@ -5,7 +5,6 @@ import {
 } from '@react-navigation/native-stack';
 import LoginScreen from './LoginScreen';
 import RegisterScreen from './RegisterScreen';
-import {StyleSheet} from 'react-native';
 
 export type AuthStackNavigationProps =
   NativeStackNavigationProp<AuthStackParams>;
@@ -20,7 +19,3 @@ export default function AuthStack() {
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  block: {flex: 1, backgroundColor: 'white'},
-});

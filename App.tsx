@@ -10,13 +10,10 @@
 
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import RootStack from './src/screens/RootStack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {View, Text} from 'react-native';
-
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -25,8 +22,8 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => {
       (async () => {
-        const userInfo = await AsyncStorage.getItem('userinfo');
-        if (userInfo) {
+        const token = await AsyncStorage.getItem('parking-ppak-token');
+        if (token) {
           setAuth(true);
         } else {
           setAuth(false);
@@ -39,7 +36,7 @@ export default function App() {
   if (isLoading) {
     return (
       <View style={{backgroundColor: 'blue', flex: 1}}>
-        <Text>Loading</Text>
+        <Text style={{color: 'white'}}>Loading</Text>
       </View>
     );
   }
