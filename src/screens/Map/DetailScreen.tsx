@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from 'react-native';
 export default function DetailScreen() {
   return (
     <View style={styles.block}>
-      <Text>DetailScreen1</Text>
+      <Text>DetailScreen12</Text>
     </View>
   );
 }
