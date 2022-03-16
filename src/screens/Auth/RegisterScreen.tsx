@@ -1,5 +1,5 @@
 import React from 'react';
-import palette from '../../constant/palette';
+import {palette} from '@constant/index';
 import {AuthStackNavigationProps} from './index';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
