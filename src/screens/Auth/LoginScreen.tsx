@@ -1,6 +1,6 @@
 import React from 'react';
 import {AuthStackNavigationProps} from './index';
-import palette from '../../constant/palette';
+import {palette} from '@constant/index';
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import ZocialIcon from 'react-native-vector-icons/Zocial';

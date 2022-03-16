@@ -43,6 +43,7 @@
       "@/*": ["./*"],
       "@components/*": ["components/*"],
       "@containers/*": ["containers/*"],
+      "@constant/*": ["constant/*"],
       "@modules/*": ["modules/*"],
       "@scenes/*": ["scenes/*"],
       "@utils/*": ["utils/*"]
