@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {palette} from '@constant/index';
 import {useInput} from 'hooks';
 import {BorderInput} from 'components/common';
@@ -33,6 +33,7 @@ export default function RegisterScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
+  const [test, setTest] = useState('');
 
   const onPressLogin = () => {
     navigation.navigate('Login');
@@ -40,6 +41,11 @@ export default function RegisterScreen() {
 
   console.log('email>>', email);
   console.log('password>>', password);
+
+  const handleChange = (e: any) => {
+    console.log('e>>', e);
+    setTest(e);
+  };
 
   return (
     <KeyboardAvoidingView
