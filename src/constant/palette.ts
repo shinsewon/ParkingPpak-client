@@ -11,6 +11,7 @@ const palette = {
   blue_4: '#A2B3DA',
   yellow_1: '#FFE812',
   green_1: '#2db400',
+  red_1: '#FF452C',
 };
 
 export default palette;

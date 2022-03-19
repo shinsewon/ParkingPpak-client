@@ -5,6 +5,8 @@ import {useNavigation} from '@react-navigation/native';
 import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import ZocialIcon from 'react-native-vector-icons/Zocial';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 
 export default function LoginScreen() {
@@ -14,30 +16,63 @@ export default function LoginScreen() {
     navigation.navigate('Register');
   };
 
+  const validationSchema = Yup.object().shape({
+    email: Yup.string().required('이메일 필수'),
+    password: Yup.string().required('이메일 필수'),
+    // .matches(
+    //   PASSWORD_VALIDATION,
+    //   '형식에 맞게 입력해주세요'
+    // ),
+  });
+
+  const initialValues: LoginRequest = {
+    email: '',
+    password: '',
+  };
+
   return (
     <View style={styles.block}>
       <View style={styles.logo}>
         <Text>로고</Text>
       </View>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          returnKeyType="next"
-          placeholder="이메일"
-        />
-      </View>
-      <View style={styles.inputWrapper}>
-        <TextInput
-          style={styles.input}
-          textContentType="password"
-          returnKeyType="done"
-          placeholder="비밀번호"
-          secureTextEntry
-        />
-      </View>
-      <Pressable style={styles.loginButton}>
-        <Text style={styles.login}>로그인</Text>
-      </Pressable>
+      <Formik
+        initialValues={initialValues}
+        onSubmit={(values: LoginRequest) => {
+          console.log(values);
+        }}
+        validateOnMount
+        validationSchema={validationSchema}>
+        {({values, handleChange, handleSubmit, isValid}) => (
+          <>
+            <View style={[styles.inputWrapper]}>
+              <TextInput
+                style={styles.input}
+                value={values.email}
+                onChangeText={handleChange('email')}
+                returnKeyType="next"
+                placeholder="이메일"
+              />
+            </View>
+            <View style={[styles.inputWrapper]}>
+              <TextInput
+                style={styles.input}
+                textContentType="password"
+                returnKeyType="done"
+                placeholder="비밀번호"
+                value={values.password}
+                onChangeText={handleChange('password')}
+                secureTextEntry
+              />
+            </View>
+            <Pressable
+              style={[styles.loginButton, !isValid && styles.disable]}
+              disabled={!isValid}
+              onPress={handleSubmit}>
+              <Text style={styles.login}>로그인</Text>
+            </Pressable>
+          </>
+        )}
+      </Formik>
       <Pressable style={styles.registerWrapper} onPress={onPressRegister}>
         <Text style={styles.appName}>파킹빡</Text>
         <Text style={styles.register}>회원가입</Text>
@@ -92,6 +127,9 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     backgroundColor: palette.blue_4,
     height: 65,
+  },
+  disable: {
+    backgroundColor: palette.grey_5,
   },
   login: {
     textAlign: 'center',
