@@ -6,5 +6,10 @@ declare global {
     password: string;
   };
 
-  //   type RegisterRequest = {};
+  type RegisterRequest = {
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+  };
 }

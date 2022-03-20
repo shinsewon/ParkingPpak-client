@@ -1,7 +1,7 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
+import * as Yup from 'yup';
+import {Formik} from 'formik';
 import {palette} from '@constant/index';
-import {useInput} from 'hooks';
-import {BorderInput} from 'components/common';
 import {AuthStackNavigationProps} from './index';
 import {useNavigation} from '@react-navigation/native';
 import {
@@ -15,89 +15,134 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
-export interface InputProps {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
-
 export default function RegisterScreen() {
-  const [{name, email, password, confirmPassword}, onChange] =
-    useInput<InputProps>({
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
   const navigation = useNavigation<AuthStackNavigationProps>();
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
-  const [test, setTest] = useState('');
+  const confirmPasswordRef = useRef<TextInput>(null);
 
-  const onPressLogin = () => {
-    navigation.navigate('Login');
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('이름은 필수입니다.'),
+    email: Yup.string()
+      .email('유효하지 않은 이메일입니다.')
+      .required('이메일은 필수입니다.'),
+    password: Yup.string()
+      .required('비밀번호 입력은 필수입니다.')
+      .matches(
+        /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,16}$/,
+        '비밀번호는 반드시 8~16자이며, 영문, 숫자, 특수문자를 포함해야 합니다.',
+      ),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password'), null], '비밀번호가 일치하지 않습니다.')
+      .required('비밀번호 입력은 필수 입니다.'),
+  });
+
+  const initialValues: RegisterRequest = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
-  console.log('email>>', email);
-  console.log('password>>', password);
-
-  const handleChange = (e: any) => {
-    console.log('e>>', e);
-    setTest(e);
-  };
+  const onPressLogin = () => navigation.pop();
 
   return (
     <KeyboardAvoidingView
       style={styles.KeyboardAvoidingView}
       behavior={Platform.select({ios: 'padding'})}>
-      <SafeAreaView>
+      <SafeAreaView style={styles.safeView}>
         <View style={styles.logo}>
           <Text>로고</Text>
         </View>
-        <BorderInput
-          placeholder="이름"
-          returnKeyType="next"
-          value={name}
-          onChangeText={onChange('name')}
-          onSubmitEditing={() => emailRef.current?.focus()}
-        />
-        <BorderInput
-          placeholder="이메일"
-          returnKeyType="next"
-          value={email}
-          ref={emailRef}
-          onChangeText={onChange('email')}
-        />
 
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            textContentType="password"
-            returnKeyType="done"
-            placeholder="비밀번호"
-            secureTextEntry
-            value={password}
-            onChangeText={onChange('password')}
-          />
-        </View>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            textContentType="password"
-            returnKeyType="done"
-            placeholder="비밀번호 확인"
-            secureTextEntry
-            value={confirmPassword}
-            onChangeText={onChange('confirmPassword')}
-          />
-        </View>
-        <Pressable style={styles.loginButton}>
-          <Text style={styles.login}>회원가입</Text>
-        </Pressable>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={values => {
+            console.log('values>>', values);
+          }}
+          validateOnMount
+          validationSchema={validationSchema}>
+          {({
+            values,
+            handleChange,
+            handleSubmit,
+            handleBlur,
+            isValid,
+            errors,
+            touched,
+          }) => {
+            console.log('errors>>', errors);
+            console.log('touched>>', touched);
+            return (
+              <>
+                <TextInput
+                  style={styles.input}
+                  value={values.name}
+                  returnKeyType="next"
+                  placeholder="이름"
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  onSubmitEditing={() => emailRef.current?.focus()}
+                />
+                {errors.name && touched.name && (
+                  <Text style={{color: 'red'}}>{errors.name}</Text>
+                )}
+                <TextInput
+                  ref={emailRef}
+                  style={styles.input}
+                  value={values.email}
+                  returnKeyType="next"
+                  placeholder="이메일"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  onSubmitEditing={() => passwordRef.current?.focus()}
+                />
+                {errors.email && touched.email && (
+                  <Text style={{color: 'red'}}>{errors.email}</Text>
+                )}
+
+                <TextInput
+                  ref={passwordRef}
+                  style={styles.input}
+                  value={values.password}
+                  returnKeyType="next"
+                  placeholder="비밀번호"
+                  secureTextEntry
+                  onChangeText={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                />
+                {errors.password && touched.password && (
+                  <Text style={{color: 'red'}}>{errors.password}</Text>
+                )}
+                <TextInput
+                  ref={confirmPasswordRef}
+                  style={styles.input}
+                  value={values.confirmPassword}
+                  returnKeyType="done"
+                  placeholder="비밀번호 확인"
+                  secureTextEntry
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={handleBlur('confirmPassword')}
+                />
+                {errors.confirmPassword && touched.confirmPassword && (
+                  <Text style={{color: 'red'}}>{errors.confirmPassword}</Text>
+                )}
+                <Pressable
+                  style={[styles.registerButton, !isValid && styles.disable]}
+                  disabled={!isValid}
+                  onPress={handleSubmit}>
+                  <Text style={styles.register}>회원가입</Text>
+                </Pressable>
+              </>
+            );
+          }}
+        </Formik>
         <Pressable style={styles.registerWrapper} onPress={onPressLogin}>
-          <Text style={styles.appName}>파킹빡</Text>
-          <Text style={styles.register}>로그인</Text>
+          <Text style={styles.appName}>뒤로가기</Text>
         </Pressable>
       </SafeAreaView>
     </KeyboardAvoidingView>
@@ -107,6 +152,8 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
   KeyboardAvoidingView: {
     flex: 1,
+  },
+  safeView: {
     paddingHorizontal: 30,
     paddingVertical: 100,
   },
@@ -121,24 +168,24 @@ const styles = StyleSheet.create({
     backgroundColor: palette.grey_5,
     marginBottom: 20,
   },
-  inputWrapper: {
+  disable: {
+    backgroundColor: palette.grey_5,
+  },
+  input: {
     height: 60,
+    fontSize: 18,
     borderColor: palette.grey_6,
     marginBottom: 15,
     borderRadius: 40,
     borderWidth: 1,
     paddingHorizontal: 20,
   },
-  input: {
-    height: 60,
-    fontSize: 18,
-  },
-  loginButton: {
+  registerButton: {
     borderRadius: 40,
     backgroundColor: palette.blue_4,
     height: 65,
   },
-  login: {
+  register: {
     textAlign: 'center',
     fontSize: 20,
     lineHeight: 65,
@@ -158,5 +205,4 @@ const styles = StyleSheet.create({
     marginRight: 5,
     color: palette.blue_1,
   },
-  register: {fontSize: 16, lineHeight: 50, color: palette.grey_1},
 });
