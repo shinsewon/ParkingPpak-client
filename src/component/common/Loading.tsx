@@ -7,9 +7,7 @@ export default function Loading() {
   return (
     <View style={styles.wrapper}>
       <LottieView
-        // 이 친구는 지금 실행하면 에러가나네요... 추구에 이 친구로 변경해야합니다.
-        // source={require('@assets/lottie/loading.json')}
-        source={require('@/assets/lottie/loading.json')}
+        source={require('@assets/lottie/loading.json')}
         autoPlay
         loop
         resizeMode="cover"
