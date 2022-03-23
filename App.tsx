@@ -12,8 +12,8 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './src/screens/RootStack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Loading} from '@/component/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View, Text} from 'react-native';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -30,15 +30,11 @@ export default function App() {
         }
         setIsLoading(false);
       })();
-    }, 1000);
+    }, 2000);
   }, []);
 
   if (isLoading) {
-    return (
-      <View style={{backgroundColor: 'blue', flex: 1}}>
-        <Text style={{color: 'white'}}>Loading</Text>
-      </View>
-    );
+    return <Loading />;
   }
 
   return (
