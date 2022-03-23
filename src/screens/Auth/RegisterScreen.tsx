@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
+type RegisterForm = RegisterRequest & {confirmPassword: string};
+
 export default function RegisterScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
   const emailRef = useRef<TextInput>(null);
@@ -37,7 +39,7 @@ export default function RegisterScreen() {
       .required('비밀번호 입력은 필수 입니다.'),
   });
 
-  const initialValues: RegisterRequest = {
+  const initialValues: RegisterForm = {
     name: '',
     email: '',
     password: '',
