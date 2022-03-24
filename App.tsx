@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './src/screens/RootStack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Loading} from '@/component/common';
+import {Loading} from '@/components/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {

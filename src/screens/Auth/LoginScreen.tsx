@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {AuthStackNavigationProps} from './index';
 import {palette} from '@constant/index';
 import {useNavigation} from '@react-navigation/native';
@@ -6,6 +6,7 @@ import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import ZocialIcon from 'react-native-vector-icons/Zocial';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Formik} from 'formik';
+import {BorderedInput, CustomButton} from '@components/common';
 import * as Yup from 'yup';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 
@@ -17,18 +18,16 @@ export default function LoginScreen() {
   };
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().required('이메일 필수'),
-    password: Yup.string().required('이메일 필수'),
-    // .matches(
-    //   PASSWORD_VALIDATION,
-    //   '형식에 맞게 입력해주세요'
-    // ),
+    email: Yup.string().required('이메일은 필수입니다.'),
+    password: Yup.string().required('비밀번호 입력은 필수입니다.'),
   });
 
   const initialValues: LoginRequest = {
     email: '',
     password: '',
   };
+
+  const passwordRef = useRef<TextInput>(null);
 
   return (
     <View style={styles.block}>
@@ -42,34 +41,38 @@ export default function LoginScreen() {
         }}
         validateOnMount
         validationSchema={validationSchema}>
-        {({values, handleChange, handleSubmit, isValid}) => (
+        {({values, handleChange, handleSubmit, isValid, errors, touched}) => (
           <>
-            <View style={[styles.inputWrapper]}>
-              <TextInput
-                style={styles.input}
-                value={values.email}
-                onChangeText={handleChange('email')}
-                returnKeyType="next"
-                placeholder="이메일"
-              />
-            </View>
-            <View style={[styles.inputWrapper]}>
-              <TextInput
-                style={styles.input}
-                textContentType="password"
-                returnKeyType="done"
-                placeholder="비밀번호"
-                value={values.password}
-                onChangeText={handleChange('password')}
-                secureTextEntry
-              />
-            </View>
-            <Pressable
-              style={[styles.loginButton, !isValid && styles.disable]}
+            <BorderedInput
+              value={values.email}
+              onChangeText={handleChange('email')}
+              returnKeyType="next"
+              placeholder="이메일"
+              keyboardType="email-address"
+              onEndEditing={() => passwordRef.current?.focus()}
+              errorMessage={
+                errors.email && touched.email ? errors.email : undefined
+              }
+            />
+            <BorderedInput
+              ref={passwordRef}
+              textContentType="password"
+              returnKeyType="done"
+              placeholder="비밀번호"
+              value={values.password}
+              onChangeText={handleChange('password')}
+              secureTextEntry
+              errorMessage={
+                errors.password && touched.password
+                  ? errors.password
+                  : undefined
+              }
+            />
+            <CustomButton
               disabled={!isValid}
-              onPress={handleSubmit}>
-              <Text style={styles.login}>로그인</Text>
-            </Pressable>
+              onPress={handleSubmit}
+              text="로그인"
+            />
           </>
         )}
       </Formik>
@@ -110,26 +113,6 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: palette.grey_5,
     marginBottom: 20,
-  },
-  inputWrapper: {
-    height: 60,
-    borderColor: palette.grey_6,
-    marginBottom: 15,
-    borderRadius: 40,
-    borderWidth: 1,
-    paddingHorizontal: 20,
-  },
-  input: {
-    height: 60,
-    fontSize: 18,
-  },
-  loginButton: {
-    borderRadius: 40,
-    backgroundColor: palette.blue_4,
-    height: 65,
-  },
-  disable: {
-    backgroundColor: palette.grey_5,
   },
   login: {
     textAlign: 'center',
