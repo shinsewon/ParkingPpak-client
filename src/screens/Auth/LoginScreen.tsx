@@ -1,4 +1,5 @@
 import React from 'react';
+import {login} from '@react-native-seoul/kakao-login';
 import {AuthStackNavigationProps} from './index';
 import {palette} from '@constant/index';
 import {useNavigation} from '@react-navigation/native';
@@ -28,6 +29,11 @@ export default function LoginScreen() {
   const initialValues: LoginRequest = {
     email: '',
     password: '',
+  };
+
+  const signInWithKakao = async () => {
+    const token = await login();
+    console.log('token>>', token);
   };
 
   return (
@@ -86,7 +92,7 @@ export default function LoginScreen() {
             style={{marginRight: 6}}
           />
         </Pressable>
-        <Pressable style={styles.social}>
+        <Pressable style={styles.social} onPress={signInWithKakao}>
           <MaterialIcon name="chat" color={palette.yellow_1} size={24} />
         </Pressable>
         <Pressable style={styles.social}>
