@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './src/screens/RootStack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {Loading} from '@/component/common';
+import {Loading} from '@/components/common';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
         if (token) {
           setAuth(true);
         } else {
-          setAuth(false);
+          setAuth(true); // 홈화면을 보기위해 임시로 true로 설정되도록 했습니다.
         }
         setIsLoading(false);
       })();

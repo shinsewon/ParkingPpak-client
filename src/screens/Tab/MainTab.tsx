@@ -15,7 +15,11 @@ const Tab = createBottomTabNavigator<MainTabParams>();
 export default function MainTab() {
   return (
     <Tab.Navigator
-      screenOptions={{tabBarShowLabel: false, tabBarActiveTintColor: 'yellow'}}>
+      screenOptions={{
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: 'yellow',
+        headerShown: false,
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeScreen}
@@ -26,20 +30,11 @@ export default function MainTab() {
         }}
       />
       <Tab.Screen
-        name="Map"
-        component={MapStack}
-        options={{
-          tabBarIcon: ({size, color}) => (
-            <Icon size={size} color={color} name="map" />
-          ),
-        }}
-      />
-      <Tab.Screen
         name="Setting"
         component={Setting}
         options={{
           tabBarIcon: ({size, color}) => (
-            <Icon size={size} color={color} name="test" />
+            <Icon size={size} color={color} name="home" />
           ),
         }}
       />
