@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ParkingPpak</string>
+    <string name="kakao_app_key">a34ad6956a7b538186f32eafffb39ec5</string>
+    
 </resources>
