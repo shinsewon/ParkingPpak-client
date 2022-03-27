@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import {BorderedInput, CustomButton} from '@components/common';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 type RegisterForm = RegisterRequest & {confirmPassword: string};
@@ -77,21 +78,19 @@ export default function RegisterScreen() {
             console.log('touched>>', touched);
             return (
               <>
-                <TextInput
-                  style={styles.input}
+                <BorderedInput
                   value={values.name}
                   returnKeyType="next"
                   placeholder="이름"
                   onChangeText={handleChange('name')}
                   onBlur={handleBlur('name')}
                   onSubmitEditing={() => emailRef.current?.focus()}
+                  errorMessage={
+                    errors.name && touched.name ? errors.name : undefined
+                  }
                 />
-                {errors.name && touched.name && (
-                  <Text style={{color: 'red'}}>{errors.name}</Text>
-                )}
-                <TextInput
+                <BorderedInput
                   ref={emailRef}
-                  style={styles.input}
                   value={values.email}
                   returnKeyType="next"
                   placeholder="이메일"
@@ -101,44 +100,46 @@ export default function RegisterScreen() {
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   onSubmitEditing={() => passwordRef.current?.focus()}
+                  errorMessage={
+                    errors.email && touched.email ? errors.email : undefined
+                  }
                 />
-                {errors.email && touched.email && (
-                  <Text style={{color: 'red'}}>{errors.email}</Text>
-                )}
-
-                <TextInput
+                <BorderedInput
                   ref={passwordRef}
-                  style={styles.input}
                   value={values.password}
                   returnKeyType="next"
                   placeholder="비밀번호"
                   secureTextEntry
+                  textContentType="password"
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   onSubmitEditing={() => confirmPasswordRef.current?.focus()}
+                  errorMessage={
+                    errors.password && touched.password
+                      ? errors.password
+                      : undefined
+                  }
                 />
-                {errors.password && touched.password && (
-                  <Text style={{color: 'red'}}>{errors.password}</Text>
-                )}
-                <TextInput
+                <BorderedInput
                   ref={confirmPasswordRef}
-                  style={styles.input}
                   value={values.confirmPassword}
                   returnKeyType="done"
                   placeholder="비밀번호 확인"
                   secureTextEntry
+                  textContentType="password"
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
+                  errorMessage={
+                    errors.confirmPassword && touched.confirmPassword
+                      ? errors.confirmPassword
+                      : undefined
+                  }
                 />
-                {errors.confirmPassword && touched.confirmPassword && (
-                  <Text style={{color: 'red'}}>{errors.confirmPassword}</Text>
-                )}
-                <Pressable
-                  style={[styles.registerButton, !isValid && styles.disable]}
+                <CustomButton
                   disabled={!isValid}
-                  onPress={handleSubmit}>
-                  <Text style={styles.register}>회원가입</Text>
-                </Pressable>
+                  onPress={handleSubmit}
+                  text="회원가입"
+                />
               </>
             );
           }}
@@ -159,7 +160,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 100,
   },
-
   block: {
     flex: 1,
     paddingHorizontal: 30,
@@ -169,23 +169,6 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: palette.grey_5,
     marginBottom: 20,
-  },
-  disable: {
-    backgroundColor: palette.grey_5,
-  },
-  input: {
-    height: 60,
-    fontSize: 18,
-    borderColor: palette.grey_6,
-    marginBottom: 15,
-    borderRadius: 40,
-    borderWidth: 1,
-    paddingHorizontal: 20,
-  },
-  registerButton: {
-    borderRadius: 40,
-    backgroundColor: palette.blue_4,
-    height: 65,
   },
   register: {
     textAlign: 'center',
