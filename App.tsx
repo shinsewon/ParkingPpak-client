@@ -26,7 +26,7 @@ export default function App() {
         if (token) {
           setAuth(true);
         } else {
-          setAuth(false);
+          setAuth(true); // 홈화면을 보기위해 임시로 true로 설정되도록 했습니다.
         }
         setIsLoading(false);
       })();
