@@ -1,5 +1,3 @@
-
-import React from 'react';
 import {login} from '@react-native-seoul/kakao-login';
 import React, {useRef} from 'react';
 import {AuthStackNavigationProps} from './index';
