@@ -3,11 +3,21 @@ import {StyleSheet, Text, View} from 'react-native';
 import SVG from '@assets/SVG';
 import {palette} from '@/constant';
 
-export default function OilItem({type, price, diff, percentile}: OilInfo) {
+type OilItemProps = OilInfo & {
+  isLast?: boolean;
+};
+
+export default function OilItem({
+  type,
+  price,
+  diff,
+  percentile,
+  isLast = false,
+}: OilItemProps) {
   const positive = true; // 변화율이 양일때 true
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, !isLast && styles.borderBottom]}>
       <Text style={styles.type}>{type}</Text>
       <Text style={[styles.price, textStyles(positive).text]}>{price}</Text>
       <SVG
@@ -29,9 +39,10 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flexDirection: 'row',
-    padding: 16,
+    paddingVertical: 16,
     alignItems: 'center',
   },
+  borderBottom: {borderBottomColor: palette.grey_6, borderBottomWidth: 1},
   type: {color: palette.grey_2, fontSize: 18, fontWeight: 'bold', flex: 1},
   price: {
     marginLeft: 6,
