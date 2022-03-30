@@ -1,12 +1,11 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {NaverMap} from 'components/Map';
+import {View} from 'react-native';
 
 export default function MapScreen() {
   return (
     <View>
-      <Text>지도 페이지</Text>
+      <NaverMap />
     </View>
   );
 }
-
-const styles = StyleSheet.create({});

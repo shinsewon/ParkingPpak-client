@@ -19,7 +19,11 @@ export default function HomeStack() {
         component={HomeScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Map" component={MapScreen} />
+      {/* <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={{headerShown: false}}
+      /> */}
     </Stack.Navigator>
   );
 }

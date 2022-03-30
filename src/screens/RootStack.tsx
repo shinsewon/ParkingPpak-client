@@ -4,6 +4,7 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
+import {MapScreen} from 'screens/Map';
 import MainTab from './MainTab';
 import Auth from './Auth';
 
@@ -25,6 +26,7 @@ function RootStack({auth}: RootStackProps) {
       initialRouteName={auth ? 'MainTab' : 'Auth'}>
       <Stack.Screen name="MainTab" component={MainTab} />
       <Stack.Screen name="Auth" component={Auth} />
+      <Stack.Screen name="Map" component={MapScreen} />
     </Stack.Navigator>
   );
 }

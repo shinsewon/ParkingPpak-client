@@ -4,6 +4,7 @@ declare global {
   type RootStackParams = {
     MainTab: undefined;
     Auth: undefined;
+    Map: undefined;
   };
 
   type AuthStackParams = {
