@@ -1,14 +1,19 @@
 import React from 'react';
 import {palette} from '@constant/index';
-import {View, StyleSheet, ViewStyle} from 'react-native';
+import {StyleSheet, ViewStyle, Pressable} from 'react-native';
 
 type ContainerProps = {
   children: Element;
   style?: ViewStyle;
+  onPress?: () => void;
 };
 
-export default function Container({children, style}: ContainerProps) {
-  return <View style={[styles.wrapper, style]}>{children}</View>;
+export default function Container({children, style, onPress}: ContainerProps) {
+  return (
+    <Pressable style={[styles.wrapper, style]} onPress={onPress}>
+      {children}
+    </Pressable>
+  );
 }
 
 const styles = StyleSheet.create({

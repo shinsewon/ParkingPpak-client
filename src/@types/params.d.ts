@@ -13,7 +13,11 @@ declare global {
 
   type MainTabParams = {
     Home: undefined;
-    Map: undefined;
     Setting: undefined;
+  };
+
+  type HomeStackParams = {
+    Home: undefined;
+    Map: undefined;
   };
 }

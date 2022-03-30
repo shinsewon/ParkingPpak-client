@@ -1,11 +1,17 @@
 import React from 'react';
 import Container from '@components/common/Container';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import SVG from '@assets/SVG';
 import OilPrice from '@components/Oil/OilPrice';
 import {palette} from '@/constant';
 
-export default function HomeStack() {
+// type HomeScreenProps = {};
+
+export default function HomeScreen({
+  navigation,
+  route,
+}: NativeStackScreenProps<any>) {
   return (
     <ScrollView
       style={styles.block}
@@ -34,7 +40,8 @@ export default function HomeStack() {
             style={{
               ...styles.container,
               flex: 3,
-            }}>
+            }}
+            onPress={() => navigation.navigate('Map')}>
             <Text style={styles.containerTitle}>지도에서 찾기</Text>
             <SVG
               name="home-map"

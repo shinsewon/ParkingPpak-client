@@ -4,7 +4,7 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import {useNavigation} from '@react-navigation/native';
-import MainTab from './Tab/MainTab';
+import MainTab from './MainTab';
 import Auth from './Auth';
 
 export type RootStackNavigationProps =
