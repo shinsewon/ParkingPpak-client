@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
-import SettingStack from './SettingStack';
+import {SettingStack} from 'screens/MainTab/SettingStack';
 
 type MainTabNavigationProps = BottomTabNavigationProp<MainTabParams>;
 
@@ -33,7 +33,7 @@ export default function MainTab() {
         component={SettingStack}
         options={{
           tabBarIcon: ({size, color}) => (
-            <Icon size={size} color={color} name="home" />
+            <Icon size={size} color={color} name="account-circle" />
           ),
         }}
       />

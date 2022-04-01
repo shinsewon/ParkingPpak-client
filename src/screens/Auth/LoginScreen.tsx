@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {login} from '@react-native-seoul/kakao-login';
 import {AuthStackNavigationProps} from './index';
 import {palette} from '@constant/index';
@@ -11,8 +11,25 @@ import {BorderedInput, CustomButton} from '@components/common';
 import * as Yup from 'yup';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 
+import {useKakaoAuthActions} from 'hooks';
+import {KakaoAuthUser} from 'recoil/atoms';
+
 export default function LoginScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const user = await AsyncStorage.getItem('user');
+  //     if (user) {
+  //       setIsLogin(true);
+  //       return;
+  //     }
+  //     setIsLogin(false);
+  //   })();
+  // }, []);
+
+  //추가
+  const {loginKakao} = useKakaoAuthActions();
 
   const onPressRegister = () => {
     navigation.navigate('Register');
@@ -29,8 +46,8 @@ export default function LoginScreen() {
   };
 
   const signInWithKakao = async () => {
-    const token = await login();
-    console.log('token>>', token);
+    const user: KakaoAuthUser = await login();
+    loginKakao(user);
   };
   const passwordRef = useRef<TextInput>(null);
 
