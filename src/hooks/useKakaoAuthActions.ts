@@ -32,7 +32,7 @@ export default function useKakaoAuthActions() {
             setKakaoUser(JSON.parse(user));
           }
           setTimeout(() => setIsLoading(true), 2000);
-        } catch (e) {
+        } catch {
           throw new Error('Fail to get kakao login Info');
         }
       },

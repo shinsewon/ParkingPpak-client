@@ -1,6 +1,4 @@
-import React, {useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React from 'react';
 import Container from '@components/common/Container';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
@@ -8,19 +6,10 @@ import SVG from '@assets/SVG';
 import OilPrice from '@components/Oil/OilPrice';
 import {palette} from '@/constant';
 
-import {getAccessToken, getProfile} from '@react-native-seoul/kakao-login';
-
 export default function HomeScreen({
   navigation,
   route,
 }: NativeStackScreenProps<any>) {
-  useEffect(() => {
-    (async () => {
-      const response = await getAccessToken();
-      console.log('res>>', response);
-    })();
-  }, []);
-
   return (
     <ScrollView
       style={styles.block}

@@ -4,7 +4,6 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
-import MapScreen from './MapScreen';
 
 export type RootStackNavigationProps =
   NativeStackNavigationProp<HomeStackParams>;
@@ -19,11 +18,6 @@ export default function HomeStack() {
         component={HomeScreen}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
-        name="Map"
-        component={MapScreen}
-        options={{headerShown: false}}
-      /> */}
     </Stack.Navigator>
   );
 }

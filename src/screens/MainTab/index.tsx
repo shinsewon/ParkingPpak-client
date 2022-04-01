@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  createBottomTabNavigator,
-  BottomTabNavigationProp,
-} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
 import {SettingStack} from 'screens/MainTab/SettingStack';
-
-type MainTabNavigationProps = BottomTabNavigationProp<MainTabParams>;
 
 const Tab = createBottomTabNavigator<MainTabParams>();
 
