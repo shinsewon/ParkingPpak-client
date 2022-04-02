@@ -1,7 +1,7 @@
 import {useRecoilValue} from 'recoil';
-import {authState} from 'recoil/atoms';
+import {kakaoAauthState} from 'recoil/atoms';
 
 export default function useKakaoUser() {
-  const auth = useRecoilValue(authState);
+  const auth = useRecoilValue(kakaoAauthState);
   return auth;
 }

@@ -1,10 +1,10 @@
 import {useMemo} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSetRecoilState} from 'recoil';
-import {KakaoAuthUser, authState, isLoading} from 'recoil/atoms';
+import {kakaoAauthState, isLoading} from 'recoil/atoms';
 
 export default function useKakaoAuthActions() {
-  const setKakaoUser = useSetRecoilState(authState);
+  const setKakaoUser = useSetRecoilState(kakaoAauthState);
   const setIsLoading = useSetRecoilState(isLoading);
 
   return useMemo(

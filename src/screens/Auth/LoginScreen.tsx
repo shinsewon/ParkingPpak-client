@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {login} from '@react-native-seoul/kakao-login';
 import {AuthStackNavigationProps} from './index';
 import {palette} from '@constant/index';
@@ -10,25 +10,11 @@ import {Formik} from 'formik';
 import {BorderedInput, CustomButton} from '@components/common';
 import * as Yup from 'yup';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-
 import {useKakaoAuthActions} from 'hooks';
-import {KakaoAuthUser} from 'recoil/atoms';
 
 export default function LoginScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const user = await AsyncStorage.getItem('user');
-  //     if (user) {
-  //       setIsLogin(true);
-  //       return;
-  //     }
-  //     setIsLogin(false);
-  //   })();
-  // }, []);
-
-  //추가
   const {loginKakao} = useKakaoAuthActions();
 
   const onPressRegister = () => {

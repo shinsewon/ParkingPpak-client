@@ -1,14 +1,6 @@
 import {atom} from 'recoil';
 
-export interface KakaoAuthUser {
-  scopes: string[];
-  refreshTokenExpiresAt: Date;
-  accessTokenExpiresAt: Date;
-  refreshToken: string;
-  accessToken: string;
-}
-
-export const authState = atom<KakaoAuthUser | null>({
+export const kakaoAauthState = atom<KakaoAuthUser | null>({
   key: 'kakaoAuthState',
   default: null,
 });

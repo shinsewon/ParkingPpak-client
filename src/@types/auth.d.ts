@@ -11,4 +11,12 @@ declare global {
     email: string;
     password: string;
   };
+
+  type KakaoAuthUser = {
+    scopes: string[];
+    refreshTokenExpiresAt: Date;
+    accessTokenExpiresAt: Date;
+    refreshToken: string;
+    accessToken: string;
+  };
 }
