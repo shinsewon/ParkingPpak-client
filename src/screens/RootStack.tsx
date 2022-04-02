@@ -23,7 +23,9 @@ function RootStack() {
   const {getKakaoLoginInfo} = useKakaoAuthActions();
 
   useEffect(() => {
-    getKakaoLoginInfo();
+    if (!isLodingState) {
+      getKakaoLoginInfo();
+    }
   }, [isLodingState]);
 
   if (!isLodingState) {

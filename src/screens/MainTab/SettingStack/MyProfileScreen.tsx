@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {View, StyleSheet, Text, Pressable} from 'react-native';
 import {useKakaoAuthActions} from 'hooks';
+
 function MyProfileScreen() {
   const navigation = useNavigation();
   const {logout} = useKakaoAuthActions();
