@@ -1,32 +1,47 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import {useNavigation} from '@react-navigation/native';
 import {MapScreen} from 'screens/Map';
 import MainTab from './MainTab';
 import Auth from './Auth';
+
+import {useRecoilValue} from 'recoil';
+import {kakaoAauthState, isLoading} from 'recoil/atoms';
+import {Loading} from '@/components/common';
+import {useKakaoAuthActions} from 'hooks';
 
 export type RootStackNavigationProps =
   NativeStackNavigationProp<RootStackParams>;
 
 const Stack = createNativeStackNavigator<RootStackParams>();
 
-type RootStackProps = {
-  auth: boolean;
-};
+function RootStack() {
+  const auth = useRecoilValue(kakaoAauthState);
+  const isLodingState = useRecoilValue(isLoading);
+  const {getKakaoLoginInfo} = useKakaoAuthActions();
 
-function RootStack({auth}: RootStackProps) {
-  const navigation = useNavigation<RootStackNavigationProps>();
+  useEffect(() => {
+    if (isLodingState) {
+      getKakaoLoginInfo();
+    }
+  }, [isLodingState]);
+
+  if (isLodingState) {
+    return <Loading />;
+  }
 
   return (
-    <Stack.Navigator
-      screenOptions={{headerShown: false}}
-      initialRouteName={auth ? 'MainTab' : 'Auth'}>
-      <Stack.Screen name="MainTab" component={MainTab} />
-      <Stack.Screen name="Auth" component={Auth} />
-      <Stack.Screen name="Map" component={MapScreen} />
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      {auth ? (
+        <>
+          <Stack.Screen name="MainTab" component={MainTab} />
+          <Stack.Screen name="Map" component={MapScreen} />
+        </>
+      ) : (
+        <Stack.Screen name="Auth" component={Auth} />
+      )}
     </Stack.Navigator>
   );
 }

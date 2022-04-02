@@ -4,7 +4,6 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import HomeScreen from './HomeScreen';
-import MapScreen from './MapScreen';
 
 export type RootStackNavigationProps =
   NativeStackNavigationProp<HomeStackParams>;

@@ -10,9 +10,12 @@ import {Formik} from 'formik';
 import {BorderedInput, CustomButton} from '@components/common';
 import * as Yup from 'yup';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+import {useKakaoAuthActions} from 'hooks';
 
 export default function LoginScreen() {
   const navigation = useNavigation<AuthStackNavigationProps>();
+
+  const {loginKakao} = useKakaoAuthActions();
 
   const onPressRegister = () => {
     navigation.navigate('Register');
@@ -29,8 +32,8 @@ export default function LoginScreen() {
   };
 
   const signInWithKakao = async () => {
-    const token = await login();
-    console.log('token>>', token);
+    const user: KakaoAuthUser = await login();
+    loginKakao(user);
   };
   const passwordRef = useRef<TextInput>(null);
 

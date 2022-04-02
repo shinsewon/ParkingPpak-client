@@ -6,8 +6,6 @@ import SVG from '@assets/SVG';
 import OilPrice from '@components/Oil/OilPrice';
 import {palette} from '@/constant';
 
-// type HomeScreenProps = {};
-
 export default function HomeScreen({
   navigation,
   route,

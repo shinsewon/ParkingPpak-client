@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  createBottomTabNavigator,
-  BottomTabNavigationProp,
-} from '@react-navigation/bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import HomeStack from './HomeStack';
-import SettingStack from './SettingStack';
-
-type MainTabNavigationProps = BottomTabNavigationProp<MainTabParams>;
+import {SettingStack} from 'screens/MainTab/SettingStack';
 
 const Tab = createBottomTabNavigator<MainTabParams>();
 
@@ -33,7 +28,7 @@ export default function MainTab() {
         component={SettingStack}
         options={{
           tabBarIcon: ({size, color}) => (
-            <Icon size={size} color={color} name="home" />
+            <Icon size={size} color={color} name="account-circle" />
           ),
         }}
       />
