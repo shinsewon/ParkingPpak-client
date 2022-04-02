@@ -8,7 +8,7 @@ import {
   getPaddingVerticalStyle,
 } from 'utils';
 
-function SizedComponent({
+function SizedView({
   children,
   style,
   marginHorizontal,
@@ -45,4 +45,4 @@ function SizedComponent({
   );
 }
 
-export default SizedComponent;
+export default SizedView;

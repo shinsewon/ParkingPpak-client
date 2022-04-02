@@ -8,7 +8,7 @@ import MainTab from './MainTab';
 import Auth from './Auth';
 
 import {useRecoilValue} from 'recoil';
-import {kakaoAauthState, isLoading} from 'recoil/atoms';
+import {kakaoAuthState, isLoading} from 'recoil/atoms';
 import {Loading} from '@/components/common';
 import {useKakaoAuthActions} from 'hooks';
 
@@ -18,7 +18,7 @@ export type RootStackNavigationProps =
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 function RootStack() {
-  const auth = useRecoilValue(kakaoAauthState);
+  const auth = useRecoilValue(kakaoAuthState);
   const isLodingState = useRecoilValue(isLoading);
   const {getKakaoLoginInfo} = useKakaoAuthActions();
 

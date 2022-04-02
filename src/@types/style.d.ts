@@ -56,6 +56,7 @@ declare global {
       height?: number | string;
       width?: number | string;
       style?: any;
+      top?: number;
     };
 
   type TextType = {
