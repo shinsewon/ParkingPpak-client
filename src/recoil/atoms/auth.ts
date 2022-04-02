@@ -15,5 +15,5 @@ export const authState = atom<KakaoAuthUser | null>({
 
 export const isLoading = atom<boolean>({
   key: 'isLoading',
-  default: false,
+  default: true,
 });
