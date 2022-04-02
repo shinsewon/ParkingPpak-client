@@ -1,6 +1,6 @@
 import {atom} from 'recoil';
 
-export const kakaoAauthState = atom<KakaoAuthUser | null>({
+export const kakaoAuthState = atom<KakaoAuthUser | null>({
   key: 'kakaoAuthState',
   default: null,
 });
