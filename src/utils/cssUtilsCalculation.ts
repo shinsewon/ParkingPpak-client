@@ -37,9 +37,8 @@ export const getPaddingVerticalStyle = (paddingVertical?: number) => {
 
   if (paddingVertical) {
     paddingVerticalStyle.paddingVertical;
-
-    return paddingVerticalStyle;
   }
+    return paddingVerticalStyle;
 };
 
 export const getFlexSetStyle = (flexSet: [FlexSet?, AlignItems?, FlexSet?]) => {
