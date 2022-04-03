@@ -1,5 +1,5 @@
 export {};
 
 declare global {
-  type Test = 'Test';
+  type ContentType = 'GAS_STATION' | 'PARKING_LOT';
 }

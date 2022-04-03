@@ -14,7 +14,7 @@ export default function HomeStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
+        name="HomePage"
         component={HomeScreen}
         options={{headerShown: false}}
       />

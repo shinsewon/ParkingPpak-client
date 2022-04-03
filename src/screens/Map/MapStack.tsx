@@ -1,15 +1,22 @@
 import React from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MapScreen} from 'screens/Map';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+} from '@react-navigation/native-stack';
+import MapScreen from './MapScreen';
+import ListScreen from './ListScreen';
 
-const Stack = createNativeStackNavigator();
+export type MapStackNavigationProps = NativeStackNavigationProp<MapStackParams>;
+
+const Stack = createNativeStackNavigator<MapStackParams>();
 
 export default function MapStack() {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}
-      initialRouteName="Map">
-      <Stack.Screen name="Map" component={MapScreen} />
+      initialRouteName="MapPage">
+      <Stack.Screen name="MapPage" component={MapScreen} />
+      <Stack.Screen name="ListPage" component={ListScreen} />
     </Stack.Navigator>
   );
 }
