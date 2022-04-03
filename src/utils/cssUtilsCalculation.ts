@@ -43,21 +43,16 @@ export const getPaddingVerticalStyle = (paddingVertical?: number) => {
 
 export const getFlexSetStyle = (flexSet: [FlexSet?, AlignItems?, FlexSet?]) => {
   const flexSetValue: FlexSetType = {};
-
-  if (flexSet.length === 1) {
+  
+   if (flexSet[0]) {
     flexSetValue.justifyContent = `${flexSet[0]}`;
-  }
-
-  if (flexSet.length === 2) {
-    flexSetValue.justifyContent = `${flexSet[0]}`;
+ }
+if (flexSet[1]) {
     flexSetValue.alignItems = `${flexSet[1]}`;
-  }
-
-  if (flexSet.length === 3) {
-    flexSetValue.justifyContent = `${flexSet[0]}`;
-    flexSetValue.alignItems = `${flexSet[1]}`;
+ }
+if (flexSet[2]) {
     flexSetValue.alignContent = `${flexSet[2]}`;
-  }
+ }
 
   return flexSetValue;
 };
