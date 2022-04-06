@@ -5,6 +5,7 @@ declare global {
     MainTab: undefined;
     Auth: undefined;
     Map: undefined;
+    Search: undefined;
   };
 
   type AuthStackParams = {
@@ -18,7 +19,12 @@ declare global {
   };
 
   type HomeStackParams = {
-    Home: undefined;
-    Map: undefined;
+    HomePage: undefined;
+  };
+
+  type MapStackParams = {
+    MapPage: undefined;
+    ListPage: undefined;
+    DetailPage: undefined;
   };
 }

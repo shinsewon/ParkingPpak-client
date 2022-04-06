@@ -2,12 +2,15 @@ import React from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {palette} from '@/constant';
 import {View, Pressable, StyleSheet, Platform, Text} from 'react-native';
 
 function SearchBox({navigation}: NativeStackScreenProps<any>) {
   const {top: marginHeight} = useSafeAreaInsets();
   const top = marginHeight;
   const goToBackScreen = () => navigation.pop();
+  const goToSearchScreen = () => navigation.navigate('Search');
+
   return (
     <View style={[styles.wrapper, {top}]}>
       <View style={styles.borderContainer}>
@@ -19,13 +22,12 @@ function SearchBox({navigation}: NativeStackScreenProps<any>) {
             ]}
             android_ripple={{color: '#fff'}}
             onPress={goToBackScreen}>
-            <Icon name="arrow-back-ios" size={24} style={styles.icon} />
+            <Icon name="arrow-back" size={24} style={styles.icon} />
           </Pressable>
         </View>
-        <View style={styles.rightContainer}>
-          <Icon name="search" size={24} style={styles.icon} />
-          <Text>주차장 또는 주유소 검색</Text>
-        </View>
+        <Pressable style={styles.rightContainer} onPress={goToSearchScreen}>
+          <Text style={styles.placeholder}>장소를 검색하세요</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -40,19 +42,16 @@ const styles = StyleSheet.create({
   },
   borderContainer: {
     flexDirection: 'row',
-    borderWidth: 1,
-    borderColor: '#dddddd',
-    backgroundColor: '#fff',
+    backgroundColor: palette.white,
     borderRadius: 4,
     height: 50,
-    shadowColor: '#000',
+    shadowColor: '#8B8B8B',
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.22,
+    shadowOpacity: 0.4,
     shadowRadius: 2.22,
-
     elevation: 3,
   },
   rightContainer: {
@@ -60,6 +59,7 @@ const styles = StyleSheet.create({
     width: '90%',
     alignItems: 'center',
   },
+  placeholder: {fontSize: 14, color: palette.grey_4},
   button: {
     width: '100%',
     height: '100%',
@@ -67,8 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    color: 'black',
-    width: 'auto',
+    color: palette.grey_3,
   },
 });
 

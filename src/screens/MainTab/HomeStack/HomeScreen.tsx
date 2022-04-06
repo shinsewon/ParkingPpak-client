@@ -25,7 +25,8 @@ export default function HomeScreen({
               ...styles.container,
               flex: 1,
               marginRight: 16,
-            }}>
+            }}
+            onPress={() => navigation.navigate('Search')}>
             <Text style={styles.containerTitle}>검색</Text>
             <SVG
               name="home-search"

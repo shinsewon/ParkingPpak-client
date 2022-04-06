@@ -3,10 +3,10 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import {MapScreen} from 'screens/Map';
 import MainTab from './MainTab';
+import {MapStack} from '@/screens/Map';
+import {SearchScreen} from '@/screens/Search';
 import Auth from './Auth';
-
 import {useRecoilValue} from 'recoil';
 import {kakaoAuthState, isLoading} from 'recoil/atoms';
 import {Loading} from '@/components/common';
@@ -18,7 +18,9 @@ export type RootStackNavigationProps =
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 function RootStack() {
-  const auth = useRecoilValue(kakaoAuthState);
+  // 인증기능을 구현하기전까진 이렇게하고 쓰면 어떨까요?
+  // const auth = useRecoilValue(kakaoAuthState);
+  const auth = true;
   const isLodingState = useRecoilValue(isLoading);
   const {getKakaoLoginInfo} = useKakaoAuthActions();
 
@@ -37,7 +39,17 @@ function RootStack() {
       {auth ? (
         <>
           <Stack.Screen name="MainTab" component={MainTab} />
-          <Stack.Screen name="Map" component={MapScreen} />
+          <Stack.Screen name="Auth" component={Auth} />
+          <Stack.Screen
+            name="Map"
+            component={MapStack}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{headerShown: false}}
+          />
         </>
       ) : (
         <Stack.Screen name="Auth" component={Auth} />
