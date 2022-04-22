@@ -26,8 +26,8 @@ export default function ExploreScreen({
   navigation,
   route,
 }: NativeStackScreenProps<any>) {
-  const _map = useRef<MapView>(null);
-  const _scrollView = useRef<ScrollView>(null);
+  const mapRef = useRef<MapView>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
   const initialMapState = {
     MARKERS,
     categories: [
@@ -88,15 +88,15 @@ export default function ExploreScreen({
       x = x - SPACING_FOR_CARD_INSET;
     }
 
-    if (_scrollView.current) {
-      _scrollView.current.scrollTo({x: x, y: 0, animated: true});
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({x: x, y: 0, animated: true});
     }
   };
 
   return (
     <View style={styles.container}>
       <MapView
-        ref={_map}
+        ref={mapRef}
         style={styles.map}
         // provider={PROVIDER_GOOGLE}
         region={mapInfo.region}>
@@ -128,7 +128,7 @@ export default function ExploreScreen({
       </MapView>
       <SearchBox navigation={navigation} route={route} />
       <Swtich />
-      <CardList mapInfo={initialMapState} ref={_scrollView} />
+      <CardList mapInfo={initialMapState} ref={scrollViewRef} />
     </View>
   );
 }
