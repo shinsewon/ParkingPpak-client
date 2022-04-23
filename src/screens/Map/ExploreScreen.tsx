@@ -15,7 +15,8 @@ import {
   Animated,
   ScrollView,
 } from 'react-native';
-import {MARKERS} from './data';
+import {GasStationMarker} from 'components/Map';
+import {MARKERS, GAS_STATION_MARKERS} from './data';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 const {width, height} = Dimensions.get('window');
@@ -98,7 +99,7 @@ export default function ExploreScreen({
       <MapView
         ref={mapRef}
         style={styles.map}
-        // provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_GOOGLE}
         region={mapInfo.region}>
         {mapInfo.MARKERS.map((marker, index) => {
           const scaleStyle = {
@@ -125,7 +126,16 @@ export default function ExploreScreen({
             </Marker>
           );
         })}
+        {GAS_STATION_MARKERS.map(marker => (
+          <GasStationMarker
+            key={marker.id}
+            title={marker.name}
+            brandName={marker.brandName}
+            coordinate={marker.location}
+          />
+        ))}
       </MapView>
+
       <SearchBox navigation={navigation} route={route} />
       <Swtich />
       <CardList mapInfo={initialMapState} ref={scrollViewRef} />

@@ -1,3 +1,51 @@
+export const GAS_STATION_MARKERS = [
+  {
+    id: 1,
+    name: 'sk주유소',
+    brandName: 'SKC',
+    location: {
+      longitude: 126.99428827188011,
+      latitude: 37.53528407470684,
+    },
+  },
+  {
+    id: 2,
+    name: '현대주유소',
+    brandName: 'HDO',
+    location: {
+      longitude: 126.99662111191111,
+      latitude: 37.53097435365625,
+    },
+  },
+  {
+    id: 3,
+    name: '알뜰 주유소',
+    brandName: 'FRUGAL',
+    location: {
+      longitude: 126.9760200000406,
+      latitude: 37.49809839550952,
+    },
+  },
+  {
+    id: 4,
+    name: '에스오일 주유소',
+    brandName: 'SOIL',
+    location: {
+      longitude: 126.9900000600406,
+      latitude: 37.49800012534952,
+    },
+  },
+  {
+    id: 5,
+    name: 'GS 주유소',
+    brandName: 'GS',
+    location: {
+      longitude: 126.9876000600406,
+      latitude: 37.48700012534952,
+    },
+  },
+];
+
 export const MARKERS: CustomMarker[] = [
   {
     id: 1,

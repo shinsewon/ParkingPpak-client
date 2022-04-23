@@ -7,6 +7,12 @@ import {
   getPaddingVerticalStyle,
 } from 'utils';
 
+type BorderViewCssType = ComponentCssType & {
+  borderWidth?: number;
+  borderColor?: string;
+  borderRadius?: number;
+};
+
 function BorderView({
   children,
   style,
@@ -16,11 +22,14 @@ function BorderView({
   paddingVertical,
   height = '100%',
   width = '100%',
-}: ComponentCssType) {
+  borderColor = 'black',
+  borderWidth = 1,
+  borderRadius,
+}: BorderViewCssType) {
   return (
     <View
       style={[
-        {width, height, ...style},
+        {width, height, borderColor, borderRadius, borderWidth, ...style},
         {...getMarginHorizontalStyle(marginHorizontal)},
         {...getMarginVerticalStyle(marginVertical)},
         {...getPaddingVerticalStyle(paddingVertical)},
