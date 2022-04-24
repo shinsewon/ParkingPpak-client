@@ -5,13 +5,16 @@ import {Image} from 'react-native';
 import {Marker, LatLng} from 'react-native-maps';
 import {FlexView, BorderView, TextComponent} from 'components/common';
 
+// 혜원님 이 부분은 제가 임시로 만든 타입이라 나중에 제대로 된 데이터 받아오면 제가 타입 정의 해놓을게요^__^
 type GasStationType = {
   coordinate: LatLng;
   title?: string;
   description?: string;
   brandName?: string;
-  onPress?: () => void;
+  onPress: () => void;
 };
+
+type GAS_STATIONS = 'SKC' | 'GS' | 'HDO' | 'SOIL' | 'FRUGAL';
 
 function GasStationMarker({
   coordinate,
@@ -20,23 +23,38 @@ function GasStationMarker({
   brandName = 'SOIL',
   onPress = () => console.log('클릭'),
 }: GasStationType) {
-  const brandList = {
+  const totalGasStationBrandList: Record<GAS_STATIONS, GAS_STATIONS> = {
     SKC: 'SKC',
-    GSC: 'GSC',
     HDO: 'HDO',
     SOIL: 'SOIL',
     FRUGAL: 'FRUGAL',
     GS: 'GS',
   };
 
-  const brand = brandList[brandName as keyof typeof GasStationMarker];
+  const noSvgImageBrandList: Pick<
+    typeof totalGasStationBrandList,
+    'HDO' | 'FRUGAL' | 'GS'
+  > = {
+    HDO: 'HDO',
+    FRUGAL: 'FRUGAL',
+    GS: 'GS',
+  };
+
+  const brand =
+    totalGasStationBrandList[
+      brandName as keyof typeof totalGasStationBrandList
+    ];
 
   const getBrandLogo = (brand: string) => {
     if (brand === 'SKC' || brand === 'SOIL') {
       return <SVG name={brand} width={30} height={30} />;
-    }
-    if (brand === 'HDO' || brand === 'FRUGAL' || brand === 'GS') {
-      return <Image source={Images[brand]} style={{width: 25, height: 25}} />;
+    } else {
+      return (
+        <Image
+          source={Images[brand as keyof typeof noSvgImageBrandList]}
+          style={{width: 25, height: 25}}
+        />
+      );
     }
   };
 

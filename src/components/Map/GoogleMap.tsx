@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {GasStationMarker} from 'components/Map';
-import {GAS_STATION_MARKERS} from '../../screens/Map/data';
+import {GAS_STATION_MARKERS} from 'screens/Map/data';
 
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
@@ -26,6 +26,7 @@ function GoogleMap() {
           title={marker.name}
           brandName={marker.brandName}
           coordinate={marker.location}
+          onPress={() => console.log('임시 클릭')}
         />
       ))}
     </MapView>
