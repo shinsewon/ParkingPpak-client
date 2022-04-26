@@ -30,4 +30,5 @@ declare global {
     categories: any[];
     region: Region;
   };
+  type GAS_STATIONS = 'SKC' | 'GS' | 'HDO' | 'SOIL' | 'FRUGAL';
 }

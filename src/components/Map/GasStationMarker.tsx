@@ -14,8 +14,6 @@ type GasStationType = {
   onPress: () => void;
 };
 
-type GAS_STATIONS = 'SKC' | 'GS' | 'HDO' | 'SOIL' | 'FRUGAL';
-
 function GasStationMarker({
   coordinate,
   title,
@@ -48,14 +46,13 @@ function GasStationMarker({
   const getBrandLogo = (brand: string) => {
     if (brand === 'SKC' || brand === 'SOIL') {
       return <SVG name={brand} width={30} height={30} />;
-    } else {
-      return (
-        <Image
-          source={Images[brand as keyof typeof noSvgImageBrandList]}
-          style={{width: 25, height: 25}}
-        />
-      );
     }
+    return (
+      <Image
+        source={Images[brand as keyof typeof noSvgImageBrandList]}
+        style={{width: 25, height: 25}}
+      />
+    );
   };
 
   return (
