@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import {GasStationMarker} from 'components/Map';
 import {FlexView} from 'components/common';
@@ -17,7 +17,6 @@ function GoogleMap() {
   return (
     <FlexView>
       <MapView
-        zoomEnabled={true}
         ref={mapRef}
         style={styles.map}
         provider={PROVIDER_GOOGLE}
