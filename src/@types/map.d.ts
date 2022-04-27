@@ -30,5 +30,13 @@ declare global {
     categories: any[];
     region: Region;
   };
-  type GAS_STATIONS = 'SKC' | 'GS' | 'HDO' | 'SOIL' | 'FRUGAL';
+  type OIL_STATIONS =
+    | 'SKE'
+    | 'GSC'
+    | 'HDO'
+    | 'SOL'
+    | 'FRUGAL'
+    | 'RTX'
+    | 'NHO'
+    | 'RTO';
 }
