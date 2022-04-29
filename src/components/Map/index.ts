@@ -7,3 +7,4 @@ export {default as OilStationMarker} from './OilStationMarker';
 export {default as MapZoomPanel} from './MapZoomPanel';
 export {default as CenterMarker} from './CenterMarker';
 export {default as SearchButton} from './SearchButton';
+export {default as MyLocationButton} from './MyLocationButton';

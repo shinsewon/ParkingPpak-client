@@ -1,23 +1,15 @@
 import React, {useRef, useState} from 'react';
 import {useQuery} from 'react-query';
 import proj4 from 'proj4';
-import {
-  StyleSheet,
-  Image,
-  ActivityIndicator,
-  View,
-  Pressable,
-  Text,
-} from 'react-native';
+import {StyleSheet, Image, ActivityIndicator} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {
   OilStationMarker,
-  MapZoomPanel,
   CenterMarker,
   SearchButton,
+  MyLocationButton,
 } from 'components/Map';
 import {FlexView} from 'components/common';
-import {getRegionForZoom, getZoomFromRegion} from 'utils';
 import {getAroundAllOilStation} from 'api';
 import images from 'assets/images';
 import {useGetCurrentPosition} from 'hooks';
@@ -32,10 +24,12 @@ proj4.defs(
   '+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43',
 );
 
+const latitudeDelta = 0.025;
+const longitudeDelta = 0.025;
+
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
   const {latlng} = useGetCurrentPosition();
-  const [zoom, setZoom] = useState<number>(18);
 
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
@@ -44,9 +38,6 @@ function GoogleMap() {
     longitudeDelta: 0.040142817690068,
   });
   const tmToWgs = proj4(WGS84, TM128, [region.longitude, region.latitude]);
-
-  // console.log('currentLocation>>', currentLocation);
-  console.log('?????????????region>>', region);
 
   const aroundAllParams = {
     x: tmToWgs[0],
@@ -72,50 +63,20 @@ function GoogleMap() {
     });
   });
 
-  const onZoomIn = () => {
-    if (zoom > 18) {
-      setZoom(18);
-    } else {
-      setZoom(zoom + 1);
-      const regn = getRegionForZoom(
-        region.latitude,
-        region.longitude,
-        zoom + 1,
-      );
-      mapRef.current?.animateToRegion(regn, 200); // zoom 관리
-    }
-  };
-
-  console.log('mapref>>>', mapRef.current?.props.region);
-
-  const onZoomOut = () => {
-    if (zoom < 3) {
-      setZoom(3);
-    } else {
-      setZoom(zoom - 1);
-      const regn = getRegionForZoom(
-        region.latitude,
-        region.longitude,
-        zoom - 1,
-      );
-      mapRef.current?.animateToRegion(regn, 200); // zoom 관리
-    }
-  };
-
   const onRegionChangeComplete = (newRegion: Region) => {
-    setZoom(getZoomFromRegion(newRegion));
     setRegion(newRegion);
+  };
+
+  const onResearchOilStation = () => refetch();
+
+  const goMyLocation = () => {
+    const region = {...latlng, latitudeDelta, longitudeDelta};
+    mapRef.current?.animateToRegion(region);
   };
 
   if (!region) {
     return <ActivityIndicator />;
   }
-
-  const onResearchOilStation = () => refetch();
-
-  // const goMyLocation = () => {
-  //   mapRef.current?.animateToRegion(latlng);
-  // };
 
   return (
     <>
@@ -125,7 +86,7 @@ function GoogleMap() {
             <MapView
               ref={mapRef}
               style={styles.map}
-              region={region}
+              initialRegion={region}
               onRegionChangeComplete={onRegionChangeComplete}>
               <Marker coordinate={latlng}>
                 <Image
@@ -134,8 +95,14 @@ function GoogleMap() {
                   resizeMode="cover"
                 />
               </Marker>
+              <CenterMarker
+                isFetching={isFetching}
+                center={{
+                  latitude: region.latitude,
+                  longitude: region.longitude,
+                }}
+              />
 
-              <CenterMarker />
               {oilStations?.map(oilStation => (
                 <OilStationMarker
                   key={oilStation.UNI_ID}
@@ -150,7 +117,6 @@ function GoogleMap() {
                 />
               ))}
             </MapView>
-            {/* <MapZoomPanel onZoomIn={onZoomIn} onZoomOut={onZoomOut} /> */}
           </>
         )}
       </FlexView>
@@ -160,14 +126,7 @@ function GoogleMap() {
         isFetching={isFetching}
         onPress={onResearchOilStation}
       />
-      <View style={styles.container}>
-        <Pressable
-          style={styles.button}
-          // onPress={goMyLocation}
-        >
-          <Text>내 현재위치</Text>
-        </Pressable>
-      </View>
+      <MyLocationButton onPress={goMyLocation} />
     </>
   );
 }
