@@ -34,8 +34,8 @@ export type SVGName =
   | 'home-oil'
   | 'home-parking'
   | 'arrow'
-  | 'SKC'
-  | 'SOIL';
+  | 'SKE'
+  | 'SOL';
 
 type SVGProps = {
   name: SVGName;
@@ -153,7 +153,7 @@ const SVG = ({name, width = 16, height = 16, fill, style}: SVGProps) => {
         viewBoxSize: {width: 18, height: 18},
       };
       break;
-    case 'SKC':
+    case 'SKE':
       svgInfo = {
         elements: [
           <G>
@@ -210,7 +210,7 @@ const SVG = ({name, width = 16, height = 16, fill, style}: SVGProps) => {
         viewBoxSize: {width: 200, height: 150},
       };
       break;
-    case 'SOIL':
+    case 'SOL':
       svgInfo = {
         elements: [
           <SvgCssUri

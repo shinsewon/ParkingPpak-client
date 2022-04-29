@@ -9,19 +9,24 @@
  */
 
 import React from 'react';
+import {QueryClientProvider, QueryClient} from 'react-query';
 import {RecoilRoot} from 'recoil';
 import {NavigationContainer} from '@react-navigation/native';
 import RootStack from './src/screens/RootStack';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
+const client = new QueryClient();
+
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <RecoilRoot>
-          <RootStack />
-        </RecoilRoot>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <QueryClientProvider client={client}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <RecoilRoot>
+            <RootStack />
+          </RecoilRoot>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }
