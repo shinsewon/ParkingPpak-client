@@ -24,14 +24,14 @@ export const getRegionForZoom = (
 };
 
 export const geoCurrentLocation = (
-  setState: Dispatch<SetStateAction<LatLng>>,
+  setState: Dispatch<SetStateAction<Region>>,
 ) => {
   Geolocation.getCurrentPosition(
     position => {
       const latitude = +JSON.stringify(position.coords.latitude);
       const longitude = +JSON.stringify(position.coords.longitude);
 
-      setState({latitude, longitude});
+      setState(prev => ({...prev, latitude, longitude}));
     },
     error => {
       console.log(error.code, error.message);

@@ -38,5 +38,24 @@ declare global {
     | 'FRUGAL'
     | 'RTX'
     | 'NHO'
-    | 'RTO';
+    | 'RTO'
+    | 'ETC';
+
+  type OilStationType = {
+    UNI_ID: string;
+    POLL_DIV_CD: string;
+    OS_NM: string;
+    PRICE: number;
+    DISTANCE: number;
+    GIS_X_COOR: number;
+    GIS_Y_COOR: number;
+  };
+
+  type AroundAllOilStationParamsType = {
+    x: number;
+    y: number;
+    radius: number;
+    prodcd: string;
+    sort: number;
+  };
 }

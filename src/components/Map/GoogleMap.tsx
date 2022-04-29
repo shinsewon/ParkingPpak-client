@@ -2,12 +2,17 @@ import React, {useRef, useState, useEffect} from 'react';
 import {useQuery} from 'react-query';
 import Geolocation from '@react-native-community/geolocation';
 import proj4 from 'proj4';
-import {StyleSheet, Platform, Image} from 'react-native';
+import {StyleSheet, Platform, Image, Pressable, Text, View} from 'react-native';
 import MapView, {LatLng, Marker} from 'react-native-maps';
-import {GasStationMarker, MapZoomPanel} from 'components/Map';
+import {
+  GasStationMarker,
+  MapZoomPanel,
+  CenterMarker,
+  SearchButton,
+} from 'components/Map';
 import {FlexView} from 'components/common';
 import {getRegionForZoom, getZoomFromRegion, geoCurrentLocation} from 'utils';
-import {getAroundAllOilStation, OilStationType} from 'api';
+import {getAroundAllOilStation} from 'api';
 import images from 'assets/images';
 
 //아래 proj4 라이브러리는 google map의 지도 위치 표기 방법은 WGS84방식, 오피넷의 위치 표기방식은 TM128방식이므로, 이를 서로 변경해주는 작업입니다.
@@ -23,12 +28,13 @@ proj4.defs(
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
   const [zoom, setZoom] = useState<number>(18);
-  const [currentLocation, setCurrentLocation] = useState<LatLng>({
+  const [currentLocation, setCurrentLocation] = useState<Region>({
     latitude: 37.564362,
     longitude: 126.977011,
+    latitudeDelta: 0.04864195044303443,
+    longitudeDelta: 0.040142817690068,
   });
 
-  console.log('@@@');
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
     longitude: 126.977011,
@@ -37,6 +43,9 @@ function GoogleMap() {
   });
   const tmToWgs = proj4(WGS84, TM128, [region.longitude, region.latitude]);
 
+  // console.log('currentLocation>>', currentLocation);
+  console.log('?????????????region>>', region);
+
   const aroundAllParams = {
     x: tmToWgs[0],
     y: tmToWgs[1],
@@ -44,7 +53,11 @@ function GoogleMap() {
     prodcd: 'B027',
     sort: 2,
   };
-  const {data: oilStations} = useQuery(['gas', tmToWgs, region], async () => {
+  const {
+    data: oilStations,
+    refetch,
+    isFetching,
+  } = useQuery(['oilStation'], async () => {
     const response = await getAroundAllOilStation(aroundAllParams);
     return response.map((oilStation: OilStationType) => {
       const wgsToTm = proj4(TM128, WGS84, [
@@ -70,6 +83,8 @@ function GoogleMap() {
       mapRef.current?.animateToRegion(regn, 200); // zoom 관리
     }
   };
+
+  console.log('mapref>>>', mapRef.current?.props.region);
 
   const onZoomOut = () => {
     if (zoom < 3) {
@@ -98,46 +113,88 @@ function GoogleMap() {
     }
   }, []);
 
+  const onResearchOilStation = () => refetch();
+
+  const goMyLocation = () => {
+    mapRef.current?.animateToRegion(currentLocation);
+  };
+
   return (
-    <FlexView>
-      {region && (
-        <>
-          <MapView
-            ref={mapRef}
-            style={styles.map}
-            region={region}
-            onRegionChangeComplete={onRegionChangeComplete}>
-            <Marker coordinate={currentLocation}>
-              <Image
-                source={images.MapMarker}
-                style={{width: 30, height: 30}}
-                resizeMode="cover"
-              />
-            </Marker>
-            {oilStations?.map(oilStation => (
-              <GasStationMarker
-                key={oilStation.UNI_ID}
-                title={oilStation.OS_NM}
-                brandName={oilStation.POLL_DIV_CD}
-                coordinate={{
-                  longitude: oilStation.GIS_Y_COOR,
-                  latitude: oilStation.GIS_X_COOR,
-                }}
-                price={oilStation.PRICE}
-                onPress={() => console.log('임시 클릭')}
-              />
-            ))}
-          </MapView>
-          <MapZoomPanel onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
-        </>
-      )}
-    </FlexView>
+    <>
+      <FlexView style={{position: 'relative'}}>
+        {region && (
+          <>
+            <MapView
+              ref={mapRef}
+              style={styles.map}
+              region={region}
+              onRegionChangeComplete={onRegionChangeComplete}>
+              <Marker coordinate={currentLocation}>
+                <Image
+                  source={images.MapMarker}
+                  style={{width: 30, height: 30}}
+                  resizeMode="cover"
+                />
+              </Marker>
+
+              <CenterMarker />
+              {oilStations?.map(oilStation => (
+                <GasStationMarker
+                  key={oilStation.UNI_ID}
+                  title={oilStation.OS_NM}
+                  brandName={oilStation.POLL_DIV_CD}
+                  coordinate={{
+                    longitude: oilStation.GIS_Y_COOR,
+                    latitude: oilStation.GIS_X_COOR,
+                  }}
+                  price={oilStation.PRICE}
+                  onPress={() => console.log('임시 클릭')}
+                />
+              ))}
+            </MapView>
+            {/* <MapZoomPanel onZoomIn={onZoomIn} onZoomOut={onZoomOut} /> */}
+          </>
+        )}
+      </FlexView>
+      <SearchButton
+        icon="refresh"
+        name="여기에서 재 검색"
+        isFetching={isFetching}
+        onPress={onResearchOilStation}
+      />
+      <View style={styles.container}>
+        <Pressable style={styles.button} onPress={goMyLocation}>
+          <Text>내 현재위치</Text>
+        </Pressable>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    alignContent: 'stretch',
+    position: 'absolute',
+    right: 15,
+    width: 50,
+    top: '25%',
+  },
+  button: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#000',
+    borderWidth: 0.5,
+    backgroundColor: '#fff',
+    marginVertical: 5,
   },
 });
 
