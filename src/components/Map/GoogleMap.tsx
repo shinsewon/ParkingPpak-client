@@ -28,6 +28,7 @@ function GoogleMap() {
     longitude: 126.977011,
   });
 
+  console.log('@@@');
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
     longitude: 126.977011,
