@@ -1,19 +1,26 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import {useQuery} from 'react-query';
-import Geolocation from '@react-native-community/geolocation';
 import proj4 from 'proj4';
-import {StyleSheet, Platform, Image, Pressable, Text, View} from 'react-native';
-import MapView, {LatLng, Marker} from 'react-native-maps';
 import {
-  GasStationMarker,
+  StyleSheet,
+  Image,
+  ActivityIndicator,
+  View,
+  Pressable,
+  Text,
+} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
+import {
+  OilStationMarker,
   MapZoomPanel,
   CenterMarker,
   SearchButton,
 } from 'components/Map';
 import {FlexView} from 'components/common';
-import {getRegionForZoom, getZoomFromRegion, geoCurrentLocation} from 'utils';
+import {getRegionForZoom, getZoomFromRegion} from 'utils';
 import {getAroundAllOilStation} from 'api';
 import images from 'assets/images';
+import {useGetCurrentPosition} from 'hooks';
 
 //아래 proj4 라이브러리는 google map의 지도 위치 표기 방법은 WGS84방식, 오피넷의 위치 표기방식은 TM128방식이므로, 이를 서로 변경해주는 작업입니다.
 const WGS84 = 'WGS84';
@@ -27,13 +34,8 @@ proj4.defs(
 
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
+  const {latlng} = useGetCurrentPosition();
   const [zoom, setZoom] = useState<number>(18);
-  const [currentLocation, setCurrentLocation] = useState<Region>({
-    latitude: 37.564362,
-    longitude: 126.977011,
-    latitudeDelta: 0.04864195044303443,
-    longitudeDelta: 0.040142817690068,
-  });
 
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
@@ -105,19 +107,15 @@ function GoogleMap() {
     setRegion(newRegion);
   };
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization();
-      // ios로 처음 시작하면 위치가 샌프란시스코가 나올겁니다. 이때 ios 시뮬레이터 -> Features ->Location -> 원하는 초기 위치 변경해주시면 됩니다.
-      geoCurrentLocation(setCurrentLocation);
-    }
-  }, []);
+  if (!region) {
+    return <ActivityIndicator />;
+  }
 
   const onResearchOilStation = () => refetch();
 
-  const goMyLocation = () => {
-    mapRef.current?.animateToRegion(currentLocation);
-  };
+  // const goMyLocation = () => {
+  //   mapRef.current?.animateToRegion(latlng);
+  // };
 
   return (
     <>
@@ -129,7 +127,7 @@ function GoogleMap() {
               style={styles.map}
               region={region}
               onRegionChangeComplete={onRegionChangeComplete}>
-              <Marker coordinate={currentLocation}>
+              <Marker coordinate={latlng}>
                 <Image
                   source={images.MapMarker}
                   style={{width: 30, height: 30}}
@@ -139,7 +137,7 @@ function GoogleMap() {
 
               <CenterMarker />
               {oilStations?.map(oilStation => (
-                <GasStationMarker
+                <OilStationMarker
                   key={oilStation.UNI_ID}
                   title={oilStation.OS_NM}
                   brandName={oilStation.POLL_DIV_CD}
@@ -163,7 +161,10 @@ function GoogleMap() {
         onPress={onResearchOilStation}
       />
       <View style={styles.container}>
-        <Pressable style={styles.button} onPress={goMyLocation}>
+        <Pressable
+          style={styles.button}
+          // onPress={goMyLocation}
+        >
           <Text>내 현재위치</Text>
         </Pressable>
       </View>

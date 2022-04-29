@@ -3,7 +3,7 @@ export {default as GoogleMap} from './GoogleMap';
 export {default as SearchBox} from './SearchBox';
 export {default as Swtich} from './Swtich';
 export {default as ListButton} from './ListButton';
-export {default as GasStationMarker} from './GasStationMarker';
+export {default as OilStationMarker} from './OilStationMarker';
 export {default as MapZoomPanel} from './MapZoomPanel';
 export {default as CenterMarker} from './CenterMarker';
 export {default as SearchButton} from './SearchButton';
