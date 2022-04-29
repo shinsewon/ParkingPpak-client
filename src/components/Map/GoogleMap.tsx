@@ -1,14 +1,14 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState} from 'react';
 import {useQuery} from 'react-query';
-import Geolocation from '@react-native-community/geolocation';
 import proj4 from 'proj4';
-import {StyleSheet, Platform, Image} from 'react-native';
-import MapView, {LatLng, Marker} from 'react-native-maps';
-import {GasStationMarker, MapZoomPanel} from 'components/Map';
+import {StyleSheet, Image, ActivityIndicator} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
+import {OilStationMarker, MapZoomPanel} from 'components/Map';
 import {FlexView} from 'components/common';
-import {getRegionForZoom, getZoomFromRegion, geoCurrentLocation} from 'utils';
-import {getAroundAllOilStation, OilStationType} from 'api';
+import {getRegionForZoom, getZoomFromRegion} from 'utils';
+import {getAroundAllOilStation} from 'api';
 import images from 'assets/images';
+import {useGetCurrentPosition} from 'hooks';
 
 //아래 proj4 라이브러리는 google map의 지도 위치 표기 방법은 WGS84방식, 오피넷의 위치 표기방식은 TM128방식이므로, 이를 서로 변경해주는 작업입니다.
 const WGS84 = 'WGS84';
@@ -22,11 +22,8 @@ proj4.defs(
 
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
+  const {latlng} = useGetCurrentPosition();
   const [zoom, setZoom] = useState<number>(18);
-  const [currentLocation, setCurrentLocation] = useState<LatLng>({
-    latitude: 37.564362,
-    longitude: 126.977011,
-  });
 
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
@@ -43,18 +40,21 @@ function GoogleMap() {
     prodcd: 'B027',
     sort: 2,
   };
-  const {data: oilStations} = useQuery(['gas', tmToWgs, region], async () => {
-    const response = await getAroundAllOilStation(aroundAllParams);
-    return response.map((oilStation: OilStationType) => {
-      const wgsToTm = proj4(TM128, WGS84, [
-        oilStation.GIS_X_COOR,
-        oilStation.GIS_Y_COOR,
-      ]);
-      (oilStation.GIS_X_COOR = wgsToTm[1]),
-        (oilStation.GIS_Y_COOR = wgsToTm[0]);
-      return oilStation;
-    });
-  });
+  const {data: oilStations} = useQuery(
+    ['oilStation', tmToWgs, region],
+    async () => {
+      const response = await getAroundAllOilStation(aroundAllParams);
+      return response.map((oilStation: OilStationType) => {
+        const wgsToTm = proj4(TM128, WGS84, [
+          oilStation.GIS_X_COOR,
+          oilStation.GIS_Y_COOR,
+        ]);
+        (oilStation.GIS_X_COOR = wgsToTm[1]),
+          (oilStation.GIS_Y_COOR = wgsToTm[0]);
+        return oilStation;
+      });
+    },
+  );
 
   const onZoomIn = () => {
     if (zoom > 18) {
@@ -89,47 +89,39 @@ function GoogleMap() {
     setRegion(newRegion);
   };
 
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      Geolocation.requestAuthorization();
-      // ios로 처음 시작하면 위치가 샌프란시스코가 나올겁니다. 이때 ios 시뮬레이터 -> Features ->Location -> 원하는 초기 위치 변경해주시면 됩니다.
-      geoCurrentLocation(setCurrentLocation);
-    }
-  }, []);
+  if (!region) {
+    return <ActivityIndicator />;
+  }
 
   return (
     <FlexView>
-      {region && (
-        <>
-          <MapView
-            ref={mapRef}
-            style={styles.map}
-            region={region}
-            onRegionChangeComplete={onRegionChangeComplete}>
-            <Marker coordinate={currentLocation}>
-              <Image
-                source={images.MapMarker}
-                style={{width: 30, height: 30}}
-                resizeMode="cover"
-              />
-            </Marker>
-            {oilStations?.map(oilStation => (
-              <GasStationMarker
-                key={oilStation.UNI_ID}
-                title={oilStation.OS_NM}
-                brandName={oilStation.POLL_DIV_CD}
-                coordinate={{
-                  longitude: oilStation.GIS_Y_COOR,
-                  latitude: oilStation.GIS_X_COOR,
-                }}
-                price={oilStation.PRICE}
-                onPress={() => console.log('임시 클릭')}
-              />
-            ))}
-          </MapView>
-          <MapZoomPanel onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
-        </>
-      )}
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        region={region}
+        onRegionChangeComplete={onRegionChangeComplete}>
+        <Marker coordinate={latlng}>
+          <Image
+            source={images.MapMarker}
+            style={{width: 30, height: 30}}
+            resizeMode="cover"
+          />
+        </Marker>
+        {oilStations?.map(oilStation => (
+          <OilStationMarker
+            key={oilStation.UNI_ID}
+            title={oilStation.OS_NM}
+            brandName={oilStation.POLL_DIV_CD}
+            coordinate={{
+              longitude: oilStation.GIS_Y_COOR,
+              latitude: oilStation.GIS_X_COOR,
+            }}
+            price={oilStation.PRICE}
+            onPress={() => console.log('임시 클릭')}
+          />
+        ))}
+      </MapView>
+      <MapZoomPanel onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
     </FlexView>
   );
 }

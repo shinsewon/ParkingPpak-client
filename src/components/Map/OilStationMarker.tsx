@@ -13,7 +13,7 @@ type OilStationType = {
   onPress: () => void;
 };
 
-function GasStationMarker({
+function OilStationMarker({
   coordinate,
   title,
   brandName,
@@ -43,7 +43,7 @@ function GasStationMarker({
     RTX: 'RTX',
   };
 
-  console.log('brandName>>>', brandName);
+  // console.log('brandName>>>', brandName);
 
   const brand =
     totalOilStationBrandList[
@@ -92,4 +92,4 @@ function GasStationMarker({
   );
 }
 
-export default GasStationMarker;
+export default OilStationMarker;
