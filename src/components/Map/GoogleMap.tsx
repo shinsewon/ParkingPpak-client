@@ -34,8 +34,8 @@ function GoogleMap() {
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
     longitude: 126.977011,
-    latitudeDelta: 0.04864195044303443,
-    longitudeDelta: 0.040142817690068,
+    latitudeDelta,
+    longitudeDelta,
   });
   const tmToWgs = proj4(WGS84, TM128, [region.longitude, region.latitude]);
 
