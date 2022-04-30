@@ -38,9 +38,11 @@ declare global {
     | 'FRUGAL'
     | 'RTX'
     | 'NHO'
-    | 'RTO';
+    | 'RTO'
+    | 'ETC';
 
-  export type OilStationType = {
+  type OilStationType = {
+    | 'RTO';
     UNI_ID: string;
     POLL_DIV_CD: string;
     OS_NM: string;
@@ -50,7 +52,7 @@ declare global {
     GIS_Y_COOR: number;
   };
 
-  export type AroundAllOilStationParamsType = {
+  type AroundAllOilStationParamsType = {
     x: number;
     y: number;
     radius: number;

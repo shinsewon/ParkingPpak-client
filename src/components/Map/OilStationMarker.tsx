@@ -29,11 +29,12 @@ function OilStationMarker({
     RTX: 'RTX',
     NHO: 'NHO',
     RTO: 'RTO',
+    ETC: 'ETC',
   };
 
   const noSvgImageBrandList: Pick<
     typeof totalOilStationBrandList,
-    'HDO' | 'FRUGAL' | 'GSC' | 'NHO' | 'RTO' | 'RTX'
+    'HDO' | 'FRUGAL' | 'GSC' | 'NHO' | 'RTO' | 'RTX' | 'ETC'
   > = {
     HDO: 'HDO',
     FRUGAL: 'FRUGAL',
@@ -41,9 +42,8 @@ function OilStationMarker({
     NHO: 'NHO',
     RTO: 'RTO',
     RTX: 'RTX',
+    ETC: 'ETC',
   };
-
-  // console.log('brandName>>>', brandName);
 
   const brand =
     totalOilStationBrandList[

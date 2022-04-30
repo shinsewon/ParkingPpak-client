@@ -3,9 +3,13 @@ import {useQuery} from 'react-query';
 import proj4 from 'proj4';
 import {StyleSheet, Image, ActivityIndicator} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import {OilStationMarker, MapZoomPanel} from 'components/Map';
+import {
+  OilStationMarker,
+  CenterMarker,
+  SearchButton,
+  MyLocationButton,
+} from 'components/Map';
 import {FlexView} from 'components/common';
-import {getRegionForZoom, getZoomFromRegion} from 'utils';
 import {getAroundAllOilStation} from 'api';
 import images from 'assets/images';
 import {useGetCurrentPosition} from 'hooks';
@@ -20,10 +24,12 @@ proj4.defs(
   '+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43',
 );
 
+const latitudeDelta = 0.025;
+const longitudeDelta = 0.025;
+
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
   const {latlng} = useGetCurrentPosition();
-  const [zoom, setZoom] = useState<number>(18);
 
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
@@ -40,53 +46,33 @@ function GoogleMap() {
     prodcd: 'B027',
     sort: 2,
   };
-  const {data: oilStations} = useQuery(
-    ['oilStation', tmToWgs, region],
-    async () => {
-      const response = await getAroundAllOilStation(aroundAllParams);
-      return response.map((oilStation: OilStationType) => {
-        const wgsToTm = proj4(TM128, WGS84, [
-          oilStation.GIS_X_COOR,
-          oilStation.GIS_Y_COOR,
-        ]);
-        (oilStation.GIS_X_COOR = wgsToTm[1]),
-          (oilStation.GIS_Y_COOR = wgsToTm[0]);
-        return oilStation;
-      });
-    },
-  );
+  const {
+    data: oilStations,
+    refetch,
+    isFetching,
+  } = useQuery(['oilStation'], async () => {
+    const response = await getAroundAllOilStation(aroundAllParams);
+    return response.map((oilStation: OilStationType) => {
+      const wgsToTm = proj4(TM128, WGS84, [
+        oilStation.GIS_X_COOR,
+        oilStation.GIS_Y_COOR,
+      ]);
+      (oilStation.GIS_X_COOR = wgsToTm[1]),
+        (oilStation.GIS_Y_COOR = wgsToTm[0]);
+      return oilStation;
+    });
+  });
 
-  const onZoomIn = () => {
-    if (zoom > 18) {
-      setZoom(18);
-    } else {
-      setZoom(zoom + 1);
-      const regn = getRegionForZoom(
-        region.latitude,
-        region.longitude,
-        zoom + 1,
-      );
-      mapRef.current?.animateToRegion(regn, 200); // zoom 관리
-    }
-  };
-
-  const onZoomOut = () => {
-    if (zoom < 3) {
-      setZoom(3);
-    } else {
-      setZoom(zoom - 1);
-      const regn = getRegionForZoom(
-        region.latitude,
-        region.longitude,
-        zoom - 1,
-      );
-      mapRef.current?.animateToRegion(regn, 200); // zoom 관리
-    }
-  };
 
   const onRegionChangeComplete = (newRegion: Region) => {
-    setZoom(getZoomFromRegion(newRegion));
     setRegion(newRegion);
+  };
+
+  const onResearchOilStation = () => refetch();
+
+  const goMyLocation = () => {
+    const region = {...latlng, latitudeDelta, longitudeDelta};
+    mapRef.current?.animateToRegion(region);
   };
 
   if (!region) {
@@ -94,41 +80,78 @@ function GoogleMap() {
   }
 
   return (
-    <FlexView>
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        region={region}
-        onRegionChangeComplete={onRegionChangeComplete}>
-        <Marker coordinate={latlng}>
-          <Image
-            source={images.MapMarker}
-            style={{width: 30, height: 30}}
-            resizeMode="cover"
-          />
-        </Marker>
-        {oilStations?.map(oilStation => (
-          <OilStationMarker
-            key={oilStation.UNI_ID}
-            title={oilStation.OS_NM}
-            brandName={oilStation.POLL_DIV_CD}
-            coordinate={{
-              longitude: oilStation.GIS_Y_COOR,
-              latitude: oilStation.GIS_X_COOR,
+    <>
+      <FlexView style={{position: 'relative'}}>
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          initialRegion={region}
+          onRegionChangeComplete={onRegionChangeComplete}>
+          <Marker coordinate={latlng}>
+            <Image
+              source={images.MapMarker}
+              style={{width: 30, height: 30}}
+              resizeMode="cover"
+            />
+          </Marker>
+          <CenterMarker
+            isFetching={isFetching}
+            center={{
+              latitude: region.latitude,
+              longitude: region.longitude,
             }}
-            price={oilStation.PRICE}
-            onPress={() => console.log('임시 클릭')}
           />
-        ))}
-      </MapView>
-      <MapZoomPanel onZoomIn={onZoomIn} onZoomOut={onZoomOut} />
-    </FlexView>
+
+          {oilStations?.map(oilStation => (
+            <OilStationMarker
+              key={oilStation.UNI_ID}
+              title={oilStation.OS_NM}
+              brandName={oilStation.POLL_DIV_CD}
+              coordinate={{
+                longitude: oilStation.GIS_Y_COOR,
+                latitude: oilStation.GIS_X_COOR,
+              }}
+              price={oilStation.PRICE}
+              onPress={() => console.log('임시 클릭')}
+            />
+          ))}
+        </MapView>
+      </FlexView>
+      <SearchButton
+        icon="refresh"
+        name="여기에서 재 검색"
+        isFetching={isFetching}
+        onPress={onResearchOilStation}
+      />
+      <MyLocationButton onPress={goMyLocation} />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
+  },
+  container: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    alignContent: 'stretch',
+    position: 'absolute',
+    right: 15,
+    width: 50,
+    top: '25%',
+  },
+  button: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: '#000',
+    borderWidth: 0.5,
+    backgroundColor: '#fff',
+    marginVertical: 5,
   },
 });
 

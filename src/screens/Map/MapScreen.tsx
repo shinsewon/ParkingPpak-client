@@ -9,7 +9,7 @@ function MapScreen({navigation, route}: NativeStackScreenProps<any>) {
       <GoogleMap />
       <SearchBox navigation={navigation} route={route} />
       <Swtich />
-      <ListButton navigation={navigation} route={route} />
+      {/* <ListButton navigation={navigation} route={route} /> */}
     </View>
   );
 }
