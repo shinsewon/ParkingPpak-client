@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, {Marker, Circle, LatLng} from 'react-native-maps';
+import {Circle, LatLng} from 'react-native-maps';
 import {StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {palette} from '@/constant';

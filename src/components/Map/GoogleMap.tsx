@@ -81,44 +81,40 @@ function GoogleMap() {
   return (
     <>
       <FlexView style={{position: 'relative'}}>
-        {region && (
-          <>
-            <MapView
-              ref={mapRef}
-              style={styles.map}
-              initialRegion={region}
-              onRegionChangeComplete={onRegionChangeComplete}>
-              <Marker coordinate={latlng}>
-                <Image
-                  source={images.MapMarker}
-                  style={{width: 30, height: 30}}
-                  resizeMode="cover"
-                />
-              </Marker>
-              <CenterMarker
-                isFetching={isFetching}
-                center={{
-                  latitude: region.latitude,
-                  longitude: region.longitude,
-                }}
-              />
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          initialRegion={region}
+          onRegionChangeComplete={onRegionChangeComplete}>
+          <Marker coordinate={latlng}>
+            <Image
+              source={images.MapMarker}
+              style={{width: 30, height: 30}}
+              resizeMode="cover"
+            />
+          </Marker>
+          <CenterMarker
+            isFetching={isFetching}
+            center={{
+              latitude: region.latitude,
+              longitude: region.longitude,
+            }}
+          />
 
-              {oilStations?.map(oilStation => (
-                <OilStationMarker
-                  key={oilStation.UNI_ID}
-                  title={oilStation.OS_NM}
-                  brandName={oilStation.POLL_DIV_CD}
-                  coordinate={{
-                    longitude: oilStation.GIS_Y_COOR,
-                    latitude: oilStation.GIS_X_COOR,
-                  }}
-                  price={oilStation.PRICE}
-                  onPress={() => console.log('임시 클릭')}
-                />
-              ))}
-            </MapView>
-          </>
-        )}
+          {oilStations?.map(oilStation => (
+            <OilStationMarker
+              key={oilStation.UNI_ID}
+              title={oilStation.OS_NM}
+              brandName={oilStation.POLL_DIV_CD}
+              coordinate={{
+                longitude: oilStation.GIS_Y_COOR,
+                latitude: oilStation.GIS_X_COOR,
+              }}
+              price={oilStation.PRICE}
+              onPress={() => console.log('임시 클릭')}
+            />
+          ))}
+        </MapView>
       </FlexView>
       <SearchButton
         icon="refresh"
