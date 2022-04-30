@@ -63,6 +63,7 @@ function GoogleMap() {
     });
   });
 
+
   const onRegionChangeComplete = (newRegion: Region) => {
     setRegion(newRegion);
   };

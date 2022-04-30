@@ -45,8 +45,6 @@ function OilStationMarker({
     ETC: 'ETC',
   };
 
-  // console.log('brandName>>>', brandName);
-
   const brand =
     totalOilStationBrandList[
       brandName as keyof typeof totalOilStationBrandList
