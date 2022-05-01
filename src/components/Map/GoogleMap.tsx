@@ -24,8 +24,8 @@ proj4.defs(
   '+proj=tmerc +lat_0=38 +lon_0=128 +k=0.9999 +x_0=400000 +y_0=600000 +ellps=bessel +units=m +no_defs +towgs84=-115.80,474.99,674.11,1.16,-2.31,-1.63,6.43',
 );
 
-const latitudeDelta = 0.025;
-const longitudeDelta = 0.025;
+const latitudeDelta = 0.04;
+const longitudeDelta = 0.04;
 
 function GoogleMap() {
   const mapRef = useRef<MapView>(null);
@@ -34,8 +34,8 @@ function GoogleMap() {
   const [region, setRegion] = useState<Region>({
     latitude: 37.564362,
     longitude: 126.977011,
-    latitudeDelta: 0.04864195044303443,
-    longitudeDelta: 0.040142817690068,
+    latitudeDelta,
+    longitudeDelta,
   });
   const tmToWgs = proj4(WGS84, TM128, [region.longitude, region.latitude]);
 
@@ -62,7 +62,6 @@ function GoogleMap() {
       return oilStation;
     });
   });
-
 
   const onRegionChangeComplete = (newRegion: Region) => {
     setRegion(newRegion);

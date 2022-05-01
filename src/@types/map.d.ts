@@ -39,10 +39,10 @@ declare global {
     | 'RTX'
     | 'NHO'
     | 'RTO'
-    | 'ETC';
+    | 'ETC'
+    | 'RTO';
 
   type OilStationType = {
-    | 'RTO';
     UNI_ID: string;
     POLL_DIV_CD: string;
     OS_NM: string;
