@@ -1,3 +1,5 @@
+import {LatLng} from 'react-native-maps';
+
 export {};
 
 declare global {
@@ -13,6 +15,8 @@ declare global {
     food: string;
     location: Location;
     icon: string;
+    coordinate?: LatLng;
+    stopPropagation?: boolean;
   };
 
   type Location = {
@@ -58,5 +62,39 @@ declare global {
     radius: number;
     prodcd: string;
     sort: number;
+  };
+
+  type Geometry = {
+    type: string;
+    coordinates: [number, number];
+  };
+
+  type ClusterMarkerProperties = {
+    cluster: boolean;
+    cluster_id: number;
+    point_count: number;
+    point_count_abbreviated: number;
+  };
+
+  type ViewPropertiesMarkerProps = {
+    coordinate: LatLng;
+    stopPropagation: boolean;
+  };
+
+  type GeoJSONFeatureType = {
+    type: string;
+    geometry: {
+      coordinates: number[];
+      type: string;
+    };
+    properties: {
+      coordinate: {
+        latitude: number;
+        longitude: number;
+      };
+      stopPropagation: boolean;
+      point_count: number;
+      index: number;
+    };
   };
 }

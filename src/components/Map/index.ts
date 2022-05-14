@@ -8,3 +8,5 @@ export {default as MapZoomPanel} from './MapZoomPanel';
 export {default as CenterMarker} from './CenterMarker';
 export {default as SearchButton} from './SearchButton';
 export {default as MyLocationButton} from './MyLocationButton';
+export {default as ClusterMarker} from './ClusterMarker';
+export {default as CustomClusterMapView} from './CustomClusterMapView';

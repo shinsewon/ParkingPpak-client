@@ -1,13 +1,14 @@
 import React, {useRef, useState} from 'react';
 import {useQuery} from 'react-query';
 import proj4 from 'proj4';
-import {StyleSheet, Image, ActivityIndicator} from 'react-native';
+import {Image, ActivityIndicator} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {
   OilStationMarker,
   CenterMarker,
   SearchButton,
   MyLocationButton,
+  CustomClusterMapView,
 } from 'components/Map';
 import {FlexView} from 'components/common';
 import {getAroundAllOilStation} from 'api';
@@ -37,6 +38,7 @@ function GoogleMap() {
     latitudeDelta,
     longitudeDelta,
   });
+
   const tmToWgs = proj4(WGS84, TM128, [region.longitude, region.latitude]);
 
   const aroundAllParams = {
@@ -81,9 +83,8 @@ function GoogleMap() {
   return (
     <>
       <FlexView style={{position: 'relative'}}>
-        <MapView
+        <CustomClusterMapView
           ref={mapRef}
-          style={styles.map}
           initialRegion={region}
           onRegionChangeComplete={onRegionChangeComplete}>
           <Marker coordinate={latlng}>
@@ -114,7 +115,7 @@ function GoogleMap() {
               onPress={() => console.log('임시 클릭')}
             />
           ))}
-        </MapView>
+        </CustomClusterMapView>
       </FlexView>
       <SearchButton
         icon="refresh"
@@ -126,32 +127,5 @@ function GoogleMap() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  map: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  container: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    alignContent: 'stretch',
-    position: 'absolute',
-    right: 15,
-    width: 50,
-    top: '25%',
-  },
-  button: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#000',
-    borderWidth: 0.5,
-    backgroundColor: '#fff',
-    marginVertical: 5,
-  },
-});
 
 export default GoogleMap;
