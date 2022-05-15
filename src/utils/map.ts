@@ -26,10 +26,7 @@ export const getRegionForZoom = (
 };
 
 export const isMarker = (child: JSX.Element): boolean =>
-  child &&
-  child.props &&
-  child.props.coordinate &&
-  child.props.cluster !== false;
+  child?.props?.coordinate && child.props.cluster !== false;
 
 export const calculateBBox = (region: Region): BBox => {
   let lngD;
