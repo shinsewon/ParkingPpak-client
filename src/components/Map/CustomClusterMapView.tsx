@@ -31,11 +31,13 @@ type CustomClusterMapViewType = ClusterMarkerProperties & {
   children: JSX.Element;
   otherChildren?: JSX.Element;
   onClusterPress: () => void;
-  onRegionChangeComplete: (newRegion: Region) => void; //
+  onRegionChangeComplete: (newRegion: Region) => void;
   region?: Region;
   initialRegion?: Region;
   superClusterRef: {current: SuperCluster | null};
-  [x: string]: any;
+  clusterColor?: string;
+  clusterTextColor?: string;
+  tracksViewChanges?: boolean;
 };
 
 function CustomClusterMapView(
