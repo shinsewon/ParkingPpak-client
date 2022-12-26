@@ -1,7 +1,6 @@
 # ParkingPpak
 
 #### 'ParkingPpak'은 Google 지도 API를 사용하여, 근처 주유소, 주차장 정보를 제공하는 플랫폼 앱 구현한 프로젝트입니다.
-<br>
 
 # # 프로젝트 기간 🔥
 
