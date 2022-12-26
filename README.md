@@ -17,6 +17,14 @@
 </div>
 
 
+#### # Front-end
+
+- React-Native,Typescript
+- Recoil
+- React-Query
+- Styled Component
+
+
 # # 소개 🖋
 
 - 앱 분석 : 시중에 주차장, 주유소 관련 앱들은 나눠져 있지만, 이 프로젝트는 두가지 핵심 기능을 하나로 묶어 사용자에게 동시에 모든 서비스를 제공해주는 앱이다.
